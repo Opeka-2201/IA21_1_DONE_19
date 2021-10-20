@@ -56,6 +56,7 @@ class PacmanAgent(Agent):
         # The key is a combination of an hash of the state and the score
 
         self.computedNodes = dict()
+        self.depth = 0
 
     def get_action(self, state):
         """
@@ -118,7 +119,11 @@ class PacmanAgent(Agent):
         else:
             bestValue = +math.inf
 
+        self.depth = 0
+
         for succResult, succAction in succMoves(state, player):
+            if self.depth > 12:
+                return bestValue, bestMove
             if keyHash(succResult) not in visitedNodes:
                 visitedNodes.add(keyHash(succResult))
                 computedValue = self.minimax(succResult,opponent,alpha,beta,visitedNodes)[0]
@@ -149,6 +154,8 @@ class PacmanAgent(Agent):
                         return computedValue, succAction
                     
                     beta = min(beta, computedValue)
+            
+            self.depth += 1
 
         self.computedNodes[(keyHash(state), state.getScore())] = bestValue, bestMove
         return bestValue, bestMove
