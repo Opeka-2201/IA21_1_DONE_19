@@ -39,7 +39,7 @@ def keyHash(state):
     Returns a unique hash to identifie the game's state.
     """
 
-    return state.getPacmanPosition(), state.getGhostPosition(1), state.getGhostDirection(1), state.getFood()
+    return state.getFood(), state.getPacmanPosition(), state.getGhostPosition(1), state.getGhostDirection(1)
 
 class PacmanAgent(Agent):
     def __init__(self, args):
