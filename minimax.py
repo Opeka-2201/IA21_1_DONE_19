@@ -4,6 +4,7 @@ import math
 from pacman_module.game import Agent
 from pacman_module.pacman import Directions
 
+
 def succMoves(state, player):
     """
     Returns successors states and moves available to player (ghosts or Pacman).
@@ -24,10 +25,11 @@ def succMoves(state, player):
     else:
         return state.generateGhostSuccessors(player)
 
+
 def keyHash(state):
     """
-    Returns a unique hash to identifie the game's state (food, positions of ghosts 
-    (+ directions) and Pacman).
+    Returns a unique hash to identifie the game's state (food, positions of\
+    ghosts (+ directions) and Pacman).
 
     Arguments:
     ----------
@@ -38,8 +40,10 @@ def keyHash(state):
     -------
     Returns a unique hash to identifie the game's state.
     """
-    
-    return state.getFood(), state.getPacmanPosition(), state.getGhostPosition(1), state.getGhostDirection(1)
+
+    return state.getFood(), state.getPacmanPosition(),\
+        state.getGhostPosition(1), state.getGhostDirection(1)
+
 
 class PacmanAgent(Agent):
     def __init__(self, args):
@@ -71,19 +75,21 @@ class PacmanAgent(Agent):
         - A legal move as defined in `game.Directions`.
         """
 
-        # To avoid visiting twice a node in recursion, we'll keep track of visited nodes in a set
+        # To avoid visiting twice a node in recursion, we'll keep track of
+        # visited nodes in a set
 
         visitedNodes = set()
 
         # player = 0, pacman plays first
-        # alpha and beta are initially infinite bounds to compute alpha beta pruning
+        # alpha and beta are initially infinite bounds to compute pruning
 
         return self.minimax(state, 0, -math.inf, +math.inf, visitedNodes)[1]
-    
+
     def minimax(self, state, player, alpha, beta, visitedNodes):
         """
-        Computes the Minimax value for a node and the action to take on the node
-        If the state = currentState and if player = Pacman, tells the player the best move.
+        Computes the Minimax value for a node and the action to take
+        If the state = currentState and if player = Pacman, tells the player
+        the best move.
 
         Arguments:
         ----------
@@ -105,12 +111,12 @@ class PacmanAgent(Agent):
 
         if (keyHash(state), state.getScore()) in self.computedNodes:
             return self.computedNodes[(keyHash(state), state.getScore())]
-        
+
         if player == 1:
             opponent = 0
         else:
             opponent = 1
-        
+
         # initiate the minimax algorithm
         bestMove = Directions.STOP
         if player == 0:
@@ -121,7 +127,8 @@ class PacmanAgent(Agent):
         for succResult, succAction in succMoves(state, player):
             if keyHash(succResult) not in visitedNodes:
                 visitedNodes.add(keyHash(succResult))
-                computedValue = self.minimax(succResult,opponent,alpha,beta,visitedNodes)[0]
+                computedValue = self.minimax(succResult, opponent, alpha, beta,
+                                             visitedNodes)[0]
                 visitedNodes.remove(keyHash(succResult))
 
                 if player == 0:
@@ -132,11 +139,12 @@ class PacmanAgent(Agent):
 
                     # Alpha-Beta pruning
                     if computedValue >= beta:
-                        self.computedNodes[(keyHash(state), state.getScore())] = computedValue, succAction
+                        self.computedNodes[(keyHash(state), state.getScore())]\
+                                          = computedValue, succAction
                         return computedValue, succAction
-                    
+
                     alpha = max(alpha, computedValue)
-                
+
                 else:
                     # Ghost -> min utility
                     if computedValue < bestValue:
@@ -145,17 +153,20 @@ class PacmanAgent(Agent):
 
                     # Alpha-Beta pruning
                     if computedValue <= alpha:
-                        self.computedNodes[(keyHash(state), state.getScore())] = computedValue, succAction
+                        self.computedNodes[(keyHash(state), state.getScore())]\
+                                          = computedValue, succAction
                         return computedValue, succAction
-                    
+
                     beta = min(beta, computedValue)
 
-        self.computedNodes[(keyHash(state), state.getScore())] = bestValue, bestMove
+        self.computedNodes[(keyHash(state), state.getScore())]\
+            = bestValue, bestMove
         return bestValue, bestMove
-    
+
     def utilityFunction(self, state):
         """
-        Returns utility function's value, to maximize by Pacman and minimize by the ghosts.
+        Returns utility function's value, to maximize by Pacman and minimize by
+        the ghosts.
 
         Arguments:
         ----------
