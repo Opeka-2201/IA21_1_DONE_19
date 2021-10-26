@@ -1,0 +1,110 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{enumitem}
+
+\usepackage{bbold}
+\usepackage{bm}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{hyperref}
+\usepackage[margin=2.5cm]{geometry}
+
+\begin{document}
+
+
+% ==============================================================================
+
+\title{\Large{INFO8006: Project 2 - Report}}
+\vspace{1cm}
+\author{\small{\bf Romain LAMBERMONT - s190931} \\ \small{\bf Arthur LOUIS - s191230}}
+
+\maketitle
+
+% ==============================================================================
+
+\section{Problem statement}
+
+\begin{enumerate}[label=\alph*.,leftmargin=*]
+    \item In this section, we'll discuss the problem as an adverserial search problem and we'll define all elements of the problem
+    \begin{itemize}
+        \item \underline{Set of states :} A state in Pacman can be described as :
+        \begin{equation*}
+            s = \{\text{pacmanPos}, \text{ghostPos}, \text{ghostDirection}, \text{foodMatrix}, \text{score}\}
+        \end{equation*}
+        Where all terms are respectively : the position of Pacman, the position of the ghost, the direction of the ghost, the food matrix (representing food position with boolean values) and the current score.
+        \\
+        In this case we can define the initial state $s_0$ like this :
+        \begin{equation}
+            s_0 = \{\text{pacmanPos}_0, \text{ghostPos}_0, \text{ghostDirection}_0, \text{foodMatrix}_0, 0\}
+        \end{equation}
+        Where all terms with a $0$ index being initial paramaters given by the layout.
+        \item \underline{Player function :} The player can easely be determined this way :
+        \begin{equation*}
+            \text{player}(s) =  \begin{cases}
+                                    0 \text{ if Pacman}\\
+                                    1 \text{ if Ghost}
+                                \end{cases}
+        \end{equation*}                       
+        \item \underline{Legal actions :} In a specific state $s$, the set pf legal actions is :
+        \begin{equation*}
+            \text{action}(s) = \{\text{North, East, South, West}\}
+        \end{equation*}
+        These actions are only available under the condition that we don't hit a wall if we take the action, thus it depends of the layout.
+        \item \underline{Transition model :} The transition model can be described as the result of the action taken on the previous state, giving us the new state $s'$:
+        \begin{equation*}
+            s' = \text{result}(s,a) = \{\text{pacmanPos} + a, \text{ghostPos'}, \text{ghostDirection'}, \text{foodMatrix'}, \text{score'}\}
+        \end{equation*}
+        Where all parameters with ' are computed as a response from the action taken $a$ (the ghost reacts at the action taken by Pacman and by taking consideration of its behaviour and the food and score are also updated as a result from the action $a$).
+        \item \underline{Terminal test :} The test to check if the state is terminal is simple :
+        \begin{equation*}
+            \text{terminal}(s) = \begin{cases}
+                                    \text{1 if ghost eats Pacman OR Pacman has eaten all dots in foodMatrix}\\
+                                    \text{0 Otherwise}
+                                 \end{cases}
+        \end{equation*}
+        \item \underline{Utility function} : The utility function of a Pacman is simply given by the score :
+        \begin{equation*} \text{utility}(s,p) = \begin{cases}
+                                                    \text{score if }p\text{ = Pacman}\\
+                                                    -\text{score if }p\text{ = Ghost}
+                                                \end{cases}
+        \end{equation*}
+        As a reminder the score value is computed using this formula :
+        \begin{equation*}
+            \text{score} = -\text{time steps} + 10 * \text{eaten dots} - 5 * \text{eaten capsules} + 200 * \text{eaten ghost} + (-500 \text{ if lost}) + (500 \text{ if won})
+        \end{equation*}
+    \end{itemize}
+    \newpage
+    \item In the case of a zero-sum game as Pacman the utility function can be described as :
+    \begin{equation*}
+        \text{utility}(s,p) = \begin{cases}
+                                \text{1 if Ghost eats Pacman}\\
+                                \text{-1 if Pacman eats all dots}
+                              \end{cases}
+    \end{equation*}
+\end{enumerate}
+
+\section{Implementation}
+
+\begin{enumerate}[label=\alph*.,leftmargin=*]
+    \item
+    \item \textbf{\textit{Just refer to your code.}}
+    \item \textbf{\textit{Just refer to your codes, and define your three evaluation/cut-off functions pairs.}}
+\end{enumerate}
+
+\section{Experiment}
+
+\begin{enumerate}[label=\alph*.,leftmargin=*]
+    \item
+    \item
+\end{enumerate}
+
+
+
+% ==============================================================================
+
+\end{document}
