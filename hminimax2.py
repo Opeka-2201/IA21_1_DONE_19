@@ -43,7 +43,7 @@ def heuristic(state, numActions):
         pacPos = closestFood
         food.remove(closestFood)
 
-    return state.getScore() - state.getNumFood() - distLeft + 0.2 * distPacGho
+    return state.getScore() - state.getNumFood() - distLeft - 0.2 * distPacGho
 
 
 def cutoff(state, depth):

@@ -27,8 +27,7 @@ def heuristic(state, numActions):
     distPacGho = manhattanDistance(pacPos, ghoPos)
 
     if numActions >= foodMatrix.height + foodMatrix.width or distPacGho >= 3:
-        return - state.getScore() - manhattanDistance(pacPos, ghoPos)
-
+        return - state.getScore() - distPacGho
     distLeft = 0
     food = foodMatrix.asList()
     while food:
@@ -43,7 +42,7 @@ def heuristic(state, numActions):
         pacPos = closestFood
         food.remove(closestFood)
 
-    return state.getScore() + 5*state.getNumFood() - distLeft
+    return state.getScore() + 5 * state.getNumFood() - distLeft
 
 
 def cutoff(state, depth):

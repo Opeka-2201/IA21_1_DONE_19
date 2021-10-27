@@ -103,17 +103,44 @@
     \begin{itemize}
         \item Cut-off : In our 3 different implementations, we'll use the same cut-off function. Indeed, we found it quite simple but still really good with a computation time kept low. 
         Our function just checks if the game is finished (lost or won) or if the depth in the recursion tree exceeds 4 (best relation between computation time and score)
-        \item HMinimax0 : 
-        \item HMinimax1 :
-        \item HMinimax2 : 
+        \item HMinimax0 : Our best heuristic simply uses the Manhattan Distance computation but it is used with an $A^*$ algorithm. It uses a set of Manhattan Distance between Pacman and every food dot.
+        Our heuristic function simply returns the lowest Manhattan Distance in the set. This function is used in parralel with 2 other functions, distanceToWin and aStar, that  altogether, gives us a good estimation to find the next optimal node.
+        \item HMinimax1 : For our second best heuristic, we use again the combination of the 3 functions (heuristic, distanceToWin, aStar). But this time, we add another variable to the Pacman agent (numActions) that keeps track of the number of calls to the function get\_action. We also use
+        use another variable distPacGho that computes the distance between Pacman and the ghost. These two variable are used in a condition that simplifies the computation of the heuristic if Pacman has already moved a lot or if the ghost is far away. The heuristic function used first or when the ghost is far away is :
+        \begin{equation*}
+            \text{heuristic} = \text{score} - \text{dots remaining} - \text{distance left} - 0.2 * \text{distance Pacman-Ghost}
+        \end{equation*}
+        Where distance left is the number of steps to make a path between all the dots (using Manhattan Distance) and also take into account the distance between Pacman and the ghost.
+        \item HMinimax2 : Our last heuristic is a lot similar to the HMinimax1's one but the formula used is different :
+        \begin{equation*}
+            \text{heuristic} = \text{score} - 5 * \text{dots remaining} - \text{distance left}
+        \end{equation*}
+        So we penalize more the fact that there's a lot of food remaining but don't take into account the distance between Pacman and the ghost.
     \end{itemize}
 \end{enumerate}
 
+\newpage
 \section{Experiment}
 
 \begin{enumerate}[label=\alph*.,leftmargin=*]
-    \item
-    \item
+    \item \underline{Graphs :}
+    \begin{figure}[!h]
+      \centering
+      \includegraphics[scale = 0.45]{score.png}
+      \caption{Score of different implementations in relation of ghost's type}  
+    \end{figure}
+    \begin{figure}[!h]
+        \centering
+        \includegraphics[scale = 0.45]{time.png}
+        \caption{Computation time of different implementations in relation of ghost's type}  
+    \end{figure}
+    \begin{figure}[!h]
+        \centering
+        \includegraphics[scale = 0.45]{nodes.png}
+        \caption{Computed nodes of different implementations in relation of ghost's type}  
+    \end{figure}
+    \newpage
+    \item 
 \end{enumerate}
 
 
