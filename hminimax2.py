@@ -274,4 +274,3 @@ class PacmanAgent(Agent):
                 beta = max(value, beta)
 
             return value
-
