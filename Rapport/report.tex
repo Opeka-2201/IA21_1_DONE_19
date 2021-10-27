@@ -81,7 +81,7 @@
     \newpage
     \item In the case of a zero-sum game as Pacman the utility function can be described as :
     \begin{equation*}
-        \text{utility}(s,p) = \begin{cases}
+        \text{utility}(s,p = \text{Ghost}) = \begin{cases}
                                 \text{1 if Ghost eats Pacman}\\
                                 \text{-1 if Pacman eats all dots}
                               \end{cases}
@@ -91,9 +91,22 @@
 \section{Implementation}
 
 \begin{enumerate}[label=\alph*.,leftmargin=*]
-    \item
-    \item \textbf{\textit{Just refer to your code.}}
-    \item \textbf{\textit{Just refer to your codes, and define your three evaluation/cut-off functions pairs.}}
+    \item For an algorithm to be complete, it has to find a solution if one exists. In minimax, we run through all the nodes to find a solution. This only applies if the game tree is finite, so we have to avoid repetition of moves resulting in looping on the same states.
+    \\\\
+    To avoid this, we keep track of the previously visited nodes and the value of the minimax computation respectively in a set and in a dictionnary (we check if the node is visited thanks to an key function). And by simply looking at the score function we can see 
+    that going back on the same states is not useful. Indeed if we find the same node lower in the recursion tree, the score decreases at each time step, so we need to avoid already computed nodes.
+    \\\\
+    In conclusion, to make the algorithm complete, we would need to modify the set of Legal Moves, including a move to avoid already visited nodes.
+    \item \textbf{\textit{Refer to minimax.py .}}
+    \item \textbf{\textit{Refer to hminimax(0/1/2).py .}}
+    \\\underline{Evaluation / cut-off functions :}
+    \begin{itemize}
+        \item Cut-off : In our 3 different implementations, we'll use the same cut-off function. Indeed, we found it quite simple but still really good with a computation time kept low. 
+        Our function just checks if the game is finished (lost or won) or if the depth in the recursion tree exceeds 4 (best relation between computation time and score)
+        \item HMinimax0 : 
+        \item HMinimax1 :
+        \item HMinimax2 : 
+    \end{itemize}
 \end{enumerate}
 
 \section{Experiment}

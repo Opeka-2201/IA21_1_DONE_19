@@ -9,7 +9,7 @@ import math
 
 def heuristic(state):
     """
-    Heuristic function for hminimax0.
+    Heuristic function for hminimax2.
 
     Arguments:
     ----------
