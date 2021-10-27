@@ -7,7 +7,7 @@ from pacman_module.util import manhattanDistance
 import math
 
 
-def heuristic(state):
+def heuristic(state, numActions):
     """
     Heuristic function for hminimax2.
 
@@ -21,21 +21,29 @@ def heuristic(state):
     - Cost of path from base node to goal node.
     """
 
-    heuristicsSet = set()
-    pacmanPos = state.getPacmanPosition()
-    food = state.getFood()
-    iRange = food.width
-    jRange = food.height
+    foodMatrix = state.getFood()
+    pacPos = state.getPacmanPosition()
+    ghoPos = state.getGhostPosition(1)
+    distPacGho = manhattanDistance(pacPos, ghoPos)
 
-    for i in range(0, iRange):
-        for j in range(0, jRange):
-            if food[i][j] is True:
-                heuristicsSet.add(manhattanDistance(pacmanPos, (i, j)))
+    if numActions >= foodMatrix.height + foodMatrix.width or distPacGho >= 3:
+        return - state.getScore() - manhattanDistance(pacPos, ghoPos)
 
-    if not heuristicsSet:
-        return 0
+    distLeft = 0
+    food = foodMatrix.asList()
+    while food:
+        distMin = math.inf
+        closestFood = None
+        for foodIt in food:
+            foodItToPac = manhattanDistance(foodIt, pacPos)
+            if foodItToPac < distMin:
+                distMin = foodItToPac
+                closestFood = foodIt
+        distLeft += distMin
+        pacPos = closestFood
+        food.remove(closestFood)
 
-    return min(heuristicsSet)
+    return state.getScore() - state.getNumFood() - distLeft + 0.2 * distPacGho
 
 
 def cutoff(state, depth):
@@ -59,7 +67,7 @@ def cutoff(state, depth):
         return False
 
 
-def aStar(state):
+def aStar(state, numActions):
     """
     Implements the astar algorithm to run through the recursion tree
 
@@ -103,7 +111,7 @@ def aStar(state):
                 else:
                     costIncrement = 1
 
-                heuristicCompute = heuristic(successor[0])
+                heuristicCompute = heuristic(successor[0], numActions)
 
                 costUpdate = 10 * heuristicCompute + baseCost + costIncrement
                 stateQueue.push((successor[0], costIncrement + baseCost),
@@ -162,6 +170,7 @@ class PacmanAgent(Agent):
         - `args`: Namespace of arguments from command-line prompt.
         """
         self.args = args
+        self.numActions = 0
 
     def get_action(self, state):
         """
@@ -180,6 +189,8 @@ class PacmanAgent(Agent):
         # To avoid visiting same nodes twice, we'll keep track of visited nodes
         # in a set
         visitedNodes = set()
+
+        self.numActions += 1
 
         # For first iteration, alpha and beta are put a infinite,
         # player = 0 = pacman, depth = 0
@@ -205,7 +216,7 @@ class PacmanAgent(Agent):
         """
 
         if cutoff(state, depth):
-            return state.getScore() - aStar(state)
+            return state.getScore() - aStar(state, self.numActions)
 
         if not player:
             # Player = Pacman, we need to maximize the score
@@ -263,3 +274,4 @@ class PacmanAgent(Agent):
                 beta = max(value, beta)
 
             return value
+
