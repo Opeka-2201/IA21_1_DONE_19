@@ -123,7 +123,7 @@
 \section{Experiment}
 
 \begin{enumerate}[label=\alph*.,leftmargin=*]
-    \item \underline{Graphs :}
+    \item \underline{Graphs :} Tested on a MacBook Pro with Intel i5 processor (used only for this task) and Python 3.9.5
     \begin{figure}[!h]
       \centering
       \includegraphics[scale = 0.45]{score.png}
@@ -143,6 +143,13 @@
     \item As seen on the graphs of previous section, we clearely see that HMinimax0.py is the most efficient one in terms of score, computation time and expanded nodes.
     The two other HMinimax files implement a slightly less efficient method but they're quite similar in terms of performances. This can be explained because the two last files
     look the same with just the heuristic function that differs. Indeed, the cut-off tests and tests in computation to go faster are the same, resulting in similar performances.
+    \\\\
+    Our first implementation is the best because it is using a combination of "shortest path" (the Manhattan Distance being the fastest way between two positions of the layout without taking care of the walls), and in the case
+     of Pacman this method is efficient.
+    This provides a good evaluation of the nodes, thus resulting in a good HMinimax.
+    \\\\
+    For our two last HMinimax, the heuristic evaluation is more classical, it uses a formula that takes multiple parameters and weigh them to get a representation of the game and the nodes we should explore.
+
 \end{enumerate}
 
 
