@@ -27,8 +27,7 @@ def heuristic(state, numActions):
     distPacGho = manhattanDistance(pacPos, ghoPos)
 
     if numActions >= foodMatrix.height + foodMatrix.width or distPacGho >= 3:
-        return - state.getScore() - manhattanDistance(pacPos, ghoPos)
-
+        return - state.getScore() - distPacGho
     distLeft = 0
     food = foodMatrix.asList()
     while food:
@@ -43,7 +42,7 @@ def heuristic(state, numActions):
         pacPos = closestFood
         food.remove(closestFood)
 
-    return state.getScore() - state.getNumFood() - distLeft - 0.2 * distPacGho
+    return state.getScore() + 5 * state.getNumFood() - distLeft
 
 
 def cutoff(state, depth):
@@ -189,7 +188,6 @@ class PacmanAgent(Agent):
         # To avoid visiting same nodes twice, we'll keep track of visited nodes
         # in a set
         visitedNodes = set()
-
         self.numActions += 1
 
         # For first iteration, alpha and beta are put a infinite,
